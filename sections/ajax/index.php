@@ -153,6 +153,9 @@ switch ($_GET['action']) {
 	case 'community_stats':
 		require(SERVER_ROOT . '/sections/ajax/community_stats.php');
 		break;
+	case 'collage':
+		require(SERVER_ROOT . '/sections/ajax/collage.php');
+		break;
 	default:
 		// If they're screwing around with the query string
 		json_die("failure");
