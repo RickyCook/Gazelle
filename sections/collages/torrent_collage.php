@@ -385,7 +385,7 @@ foreach ($ZIPOptions as $Option) {
 <? if (!empty($TopArtists)) { ?>
 				<li>Artists: <?=number_format(count($TopArtists))?></li>
 <? } ?>
-				<li>Subscribers: <?=number_format(count($Subscribers))?></li>
+				<li>Subscribers: <?=number_format($Subscribers)?></li>
 				<li>Built by <?=number_format(count($Users))?> user<?=(count($Users) > 1 ? 's' : '')?></li>
 				<li>Last updated: <?=time_diff($Updated)?></li>
 			</ul>
@@ -471,7 +471,7 @@ foreach ($Users as $ID => $User) {
 <? } ?>
 		<h3>Comments</h3>
 <?
-if (empty($CommentList)) {
+if ($CommentList === null) {
 	$DB->query("
 		SELECT
 			cc.ID,
@@ -568,6 +568,4 @@ if ($CollageCovers != 0) { ?>
 </div>
 <?
 View::show_footer();
-
-$Cache->cache_value('collage_'.$CollageID, array(array($Name, $Description, array(), array(), $CommentList, $Deleted, $CollageCategoryID, $CreatorID, $Locked, $MaxGroups, $MaxGroupsPerUser)), 3600);
 ?>

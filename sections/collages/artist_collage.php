@@ -13,7 +13,6 @@ $DB->query("
 	WHERE ca.CollageID='$CollageID'
 	ORDER BY ca.Sort");
 
-
 $Artists = $DB->to_array('ArtistID', MYSQLI_ASSOC);
 
 // Loop through the result set, building up $Collage and $TorrentTable
@@ -142,7 +141,7 @@ View::show_header($Name,'browse,collage,bbcode,voting,jquery,recommend');
 			<div class="head"><strong>Stats</strong></div>
 			<ul class="stats nobullet">
 				<li>Artists: <?=number_format($NumArtists)?></li>
-				<li>Subscribers: <?=number_format(count($Subscribers))?></li>
+				<li>Subscribers: <?=number_format($Subscribers)?></li>
 				<li>Built by <?=number_format(count($Users))?> user<?=(count($Users) > 1 ? 's' : '')?></li>
 				<li>Last updated: <?=time_diff($Updated)?></li>
 			</ul>
@@ -287,6 +286,4 @@ if ($CollageCovers != 0) { ?>
 </div>
 <?
 View::show_footer();
-
-$Cache->cache_value('collage_'.$CollageID, array(array($Name, $Description, array(), array(), $CommentList, $Deleted, $CollageCategoryID, $CreatorID, $Locked, $MaxGroups, $MaxGroupsPerUser)), 3600);
 ?>
