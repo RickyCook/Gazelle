@@ -73,7 +73,7 @@ json_die("success", array(
 	'maxGroupsPerUser' => (int) $MaxGroupsPerUser,
 	'hasBookmarked' => Bookmarks::has_bookmarked('collage', $CollageID),
 	'subscriberCount' => (int) $Subscribers,
-	'torrentIDList' => $TorrentGroups,
+	'torrentGroupIDList' => $TorrentGroups,
 ));
 
 ?>
