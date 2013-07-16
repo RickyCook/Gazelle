@@ -3,12 +3,12 @@ include(SERVER_ROOT.'/classes/text.class.php'); // Text formatting class
 $Text = new TEXT;
 
 if (empty($_GET['id'])) {
-	json_die("failure", "bad parameters");
+	json_die('failure', 'bad parameters');
 }
 
 $CollageID = $_GET['id'];
 if ($CollageID && !is_number($CollageID)) {
-	json_die("failure");
+	json_die('failure');
 }
 
 $CacheKey = "collage_$CollageID";
@@ -32,7 +32,7 @@ if ($Data) {
 	$DB->query($sql);
 
 	if (!$DB->has_results()) {
-		json_die("failure");
+		json_die('failure');
 	}
 
 	list($Name, $Description, $CreatorID, $Deleted, $CollageCategoryID, $Locked, $MaxGroups, $MaxGroupsPerUser, $Subscribers) = $DB->next_record();
