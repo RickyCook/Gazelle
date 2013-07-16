@@ -18,7 +18,8 @@ if (!is_number($CollageID)) {
 	error(0);
 }
 
-$Data = $Cache->get_value("collage_$CollageID");
+$CacheKey = "collage_$CollageID";
+$Data = $Cache->get_value($CollageCacheKey);
 
 if ($Data) {
 	list($K, list($Name, $Description, $NumGroups, $Subscribers, $CommentList, $Deleted, $CollageCategoryID, $CreatorID, $Locked, $MaxGroups, $MaxGroupsPerUser, $Updated, $Subscribers)) = each($Data);
@@ -86,7 +87,7 @@ if ($CollageCategoryID == array_search(ARTIST_COLLAGE, $CollageCats)) {
 	include(SERVER_ROOT.'/sections/collages/torrent_collage.php');
 }
 
-$Cache->cache_value('collage_'.$CollageID, array(array(
+$Cache->cache_value($CollageCacheKey, array(array(
 	$Name, 
 	$Description, 
 	(int)$NumGroups, 
