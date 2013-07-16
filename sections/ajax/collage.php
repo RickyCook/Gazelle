@@ -14,7 +14,7 @@ if ($CollageID && !is_number($CollageID)) {
 $CacheKey = "collage_$CollageID";
 $Data = $Cache->get_value($CacheKey);
 if ($Data) {
-	list($K, list($Name, $Description, , , , $Deleted, $CollageCategoryID, $CreatorID, $Locked, $MaxGroups, $MaxGroupsPerUser)) = each($Data);
+	list($K, list($Name, $Description, $TorrentGroups, $Subscribers, $CommentList, $Deleted, $CollageCategoryID, $CreatorID, $Locked, $MaxGroups, $MaxGroupsPerUser, $Updated)) = each($Data);
 } else {
 	$sql = "
 		SELECT
@@ -35,11 +35,30 @@ if ($Data) {
 		json_die("failure");
 	}
 
-	list($Name, $Description, $CreatorID, $Deleted, $CollageCategoryID, $Locked, $MaxGroups, $MaxGroupsPerUser) = $DB->next_record();
+	list($Name, $Description, $CreatorID, $Deleted, $CollageCategoryID, $Locked, $MaxGroups, $MaxGroupsPerUser, $Subscribers) = $DB->next_record();
 }
 
+// Populate data that wasn't included in the cache
+if (is_null($TorrentGroups) || is_number($TorrentGroups)) {
+	$sql = "
+		SELECT
+			GroupID
+		FROM collages_torrents
+		WHERE CollageID = $CollageID";
+	$DB->query($sql);
+	$TorrentGroups = $DB->collect('GroupID');
+}
+if (is_null($Subscribers)) {
+	$sql = "
+		SELECT
+			Subscribers
+		FROM collages
+		WHERE ID = $CollageID";
+	$DB->query($sql);
+	list($Subscribers) = $DB->next_record();
+}
 
-$Cache->cache_value($CacheKey, array(array($Name, $Description, array(), array(), array(), $Deleted, $CollageCategoryID, $CreatorID, $Locked, $MaxGroups, $MaxGroupsPerUser)), 3600);
+$Cache->cache_value($CacheKey, array(array($Name, $Description, $TorrentGroups, $Subscribers, $CommentList, $Deleted, $CollageCategoryID, $CreatorID, $Locked, $MaxGroups, $MaxGroupsPerUser)), 3600);
 
 json_die("success", array(
 	'id' => (int) $CollageID,
@@ -53,7 +72,8 @@ json_die("success", array(
 	'maxGroups' => (int) $MaxGroups,
 	'maxGroupsPerUser' => (int) $MaxGroupsPerUser,
 	'hasBookmarked' => Bookmarks::has_bookmarked('collage', $CollageID),
-	'cached' => (bool) $Cached,
+	'subscriberCount' => (int) $Subscribers,
+	'torrentIDList' => $TorrentGroups,
 ));
 
 ?>
