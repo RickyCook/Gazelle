@@ -201,7 +201,7 @@ foreach ($Users as $ID => $User) {
 <? } ?>
 		<h3>Comments</h3>
 <?
-if (empty($CommentList)) {
+if ($CommentList === null) {
 	$DB->query("
 		SELECT
 			cc.ID,
