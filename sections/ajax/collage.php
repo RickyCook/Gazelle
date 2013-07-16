@@ -60,7 +60,7 @@ if (is_null($Subscribers)) {
 
 $Cache->cache_value($CacheKey, array(array($Name, $Description, $TorrentGroups, $Subscribers, $CommentList, $Deleted, $CollageCategoryID, $CreatorID, $Locked, $MaxGroups, $MaxGroupsPerUser)), 3600);
 
-json_die("success", array(
+json_die('success', array(
 	'id' => (int) $CollageID,
 	'name' => $Name,
 	'description' => $Text->full_format($Description),
